@@ -44,21 +44,19 @@ class Base(pl.LightningModule):
     def forward(self, x):
         pass
 
-    @torch.jit.unused  
-    def predict_beats(self, filename, use_gpu=False):
-        """ Load and audio file and predict the beat and downbeat loctions. 
+    @torch.jit.unused
+    def predict_beats_from_array(self, audio: torch.Tensor, sr: int, use_gpu=False):
+        """ Given an in-memory audio tensor and it's sample rate,  predict the beat and downbeat loctions. 
         
         Args:
-            filename (str): Path to an audio file. 
+            audio (torch.Tensor): Audio tensor. shape (channels, samples) 
+            sr (int): Sample rate (Hz) 
             use_gpu (bool, optional): Perform inference on GPU is available. 
         
         Returns:
             beats (ndarray): Location of predicted beats in seconds.
             downbeats (ndarray): Location of predicted downbeats in seconds.
-        """
-        
-        # load the audio into tensor
-        audio, sr = torchaudio.load(filename)
+        """        
 
         # resample to 22.05 kHz if needed
         if sr != self.hparams.audio_sample_rate:
@@ -104,6 +102,23 @@ class Base(pl.LightningModule):
                                         sample_rate=self.hparams.target_sample_rate)
 
         return beats, downbeats
+
+    @torch.jit.unused  
+    def predict_beats(self, filename, use_gpu=False):
+        """ Load and audio file and predict the beat and downbeat loctions. 
+        
+        Args:
+            filename (str): Path to an audio file. 
+            use_gpu (bool, optional): Perform inference on GPU is available. 
+        
+        Returns:
+            beats (ndarray): Location of predicted beats in seconds.
+            downbeats (ndarray): Location of predicted downbeats in seconds.
+        """ 
+        # load the audio into tensor
+        audio, sr = torchaudio.load(filename)
+        return self.predict_beats_from_array(audio, sr, use_gpu)
+        
 
     @torch.jit.unused   
     def training_step(self, batch, batch_idx):
