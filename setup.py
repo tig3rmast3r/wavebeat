@@ -36,7 +36,7 @@ setup(
                       'pytorch_lightning==1.1.8',
                       'torchvision==0.8.2',
                       'scipy', 
-                      'numpy',
+                      'numpy>=1.20',
                       'cython', 
                       'mir_eval', 
                       'madmom', 
