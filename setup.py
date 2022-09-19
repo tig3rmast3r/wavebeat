@@ -9,7 +9,7 @@ DESCRIPTION = 'End-to-end beating tracking with temporal convolutional networks'
 URL = 'https://github.com/csteinmetz1/wavebeat'
 EMAIL = 'c.j.steinmetz@qmul.ac.uk'
 AUTHOR = 'Christian Steinmetz'
-REQUIRES_PYTHON = '>=3.8.0'
+REQUIRES_PYTHON = '>=3.7.0'
 VERSION = "0.0.1"
 
 HERE = Path(__file__).parent
@@ -31,12 +31,13 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=['wavebeat'],
-    install_requires=['torch==1.7.1',
-                      'torchaudio==0.7.2', 
-                      'pytorch_lightning==1.1.8',
-                      'torchvision==0.8.2',
+    install_requires=[
+                      'torch',
+                      'torchaudio', 
+                      'pytorch_lightning',
+                      'torchvision',
                       'scipy', 
-                      'numpy>=1.20',
+                      'numpy>=1.21',
                       'cython', 
                       'mir_eval', 
                       'madmom', 
