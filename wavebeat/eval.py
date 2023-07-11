@@ -1,4 +1,4 @@
-import madmom
+
 import mir_eval
 import numpy as np
 import scipy.signal
@@ -67,53 +67,3 @@ def find_beats(t, p,
     est_sm = p
 
     return ref_beats, est_beats, est_sm
-
-def evaluate(pred, target, target_sample_rate, use_dbn=False):
-
-    t_beats = target[0,:]
-    t_downbeats = target[1,:]
-    p_beats = pred[0,:]
-    p_downbeats = pred[1,:]
-
-    ref_beats, est_beats, _ = find_beats(t_beats.numpy(), 
-                                        p_beats.numpy(), 
-                                        beat_type="beat",
-                                        sample_rate=target_sample_rate)
-
-    ref_downbeats, est_downbeats, _ = find_beats(t_downbeats.numpy(), 
-                                                p_downbeats.numpy(), 
-                                                beat_type="downbeat",
-                                                sample_rate=target_sample_rate)
-
-    if use_dbn:
-        beat_dbn = madmom.features.beats.DBNBeatTrackingProcessor(
-            min_bpm=55,
-            max_bpm=215,
-            transition_lambda=100,
-            fps=target_sample_rate,
-            online=False)
-
-        downbeat_dbn = madmom.features.beats.DBNBeatTrackingProcessor(
-            min_bpm=10,
-            max_bpm=75,
-            transition_lambda=100,
-            fps=target_sample_rate,
-            online=False)
-
-        beat_pred = pred[0,:].clamp(1e-8, 1-1e-8).view(-1).numpy()
-        downbeat_pred = pred[1,:].clamp(1e-8, 1-1e-8).view(-1).numpy()
-
-        est_beats = beat_dbn.process_offline(beat_pred)
-        est_downbeats = downbeat_dbn.process_offline(downbeat_pred)
-
-    # evaluate beats - trim beats before 5 seconds.
-    ref_beats = mir_eval.beat.trim_beats(ref_beats)
-    est_beats = mir_eval.beat.trim_beats(est_beats)
-    beat_scores = mir_eval.beat.evaluate(ref_beats, est_beats)
-
-    # evaluate downbeats - trim beats before 5 seconds.
-    ref_downbeats = mir_eval.beat.trim_beats(ref_downbeats)
-    est_downbeats = mir_eval.beat.trim_beats(est_downbeats)
-    downbeat_scores = mir_eval.beat.evaluate(ref_downbeats, est_downbeats)
-
-    return beat_scores, downbeat_scores
