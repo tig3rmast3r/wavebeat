@@ -1,7 +1,6 @@
 import os
 import torch
 import julius
-import madmom
 import mir_eval
 import torchaudio
 import numpy as np
