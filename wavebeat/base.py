@@ -10,7 +10,7 @@ from argparse import ArgumentParser
 from wavebeat.plot import plot_activations, make_table, plot_histogram
 from wavebeat.loss import GlobalMSELoss, GlobalBCELoss, BCFELoss
 from wavebeat.utils import center_crop, causal_crop
-from wavebeat.eval import evaluate, find_beats
+from wavebeat.eval import  find_beats
 from wavebeat.filter import FIRFilter
 
 class Base(pl.LightningModule):
