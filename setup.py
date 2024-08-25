@@ -32,8 +32,8 @@ setup(
     url=URL,
     packages=['wavebeat'],
     install_requires=[
-                      'torch',
-                      'torchaudio', 
+                      #'torch',
+                      #'torchaudio', 
                       'pytorch_lightning',
                       'torchvision',
                       'scipy', 
