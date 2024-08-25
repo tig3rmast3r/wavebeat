@@ -51,8 +51,8 @@ threadpoolctl==2.1.0
 #torch==1.7.1; sys_platform == 'darwin'
 #torchaudio==0.7.2
 torchsummary==1.5.1
-torchvision==0.8.2+cu110; sys_platform == 'linux'
-torchvision==0.8.2; sys_platform == 'darwin'
+#torchvision==0.8.2+cu110; sys_platform == 'linux'
+#torchvision==0.8.2; sys_platform == 'darwin'
 tqdm==4.56.2
 typing-extensions==3.7.4.3
 urllib3==1.26.3
